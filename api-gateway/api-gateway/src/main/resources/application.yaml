@@ -24,13 +24,19 @@ spring:
           lower-case-service-id: true
 
       routes:
-        - id: user-service
+        - id: user-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=0
+
+        - id: user-protected
           uri: lb://user-service
           predicates:
             - Path=/users/**
           filters:
-            - StripPrefix=1
-            - name: AuthHeaderFilter
+            - StripPrefix=0
 
         - id: tournament-service
           uri: lb://tournament-service
@@ -38,7 +44,6 @@ spring:
             - Path=/api/tournaments/**
           filters:
             - StripPrefix=2
-            - name: AuthHeaderFilter
 
         - id: match-service
           uri: lb://match-service
@@ -46,7 +51,6 @@ spring:
             - Path=/api/matches/**
           filters:
             - StripPrefix=2
-            - name: AuthHeaderFilter
 
 eureka:
   client:

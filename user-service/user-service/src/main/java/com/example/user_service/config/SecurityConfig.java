@@ -33,22 +33,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/users/**").authenticated()
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/swagger-ui.html",
-                                "/webjars/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/auth/**").permitAll() // login i registracija svi imaju pristup
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // samo admini
+                        .requestMatchers("/player/**").hasRole("PLAYER") // samo player role
+                        .requestMatchers("/organizer/**").hasRole("ORGANIZER") // samo organizer role
+                        .anyRequest().authenticated() // ostalo za ulogovane korisnike
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(daoAuthProvider())
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 
     @Bean
     public DaoAuthenticationProvider daoAuthProvider() {
