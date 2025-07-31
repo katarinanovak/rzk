@@ -1,0 +1,102 @@
+server:
+  port: 8080
+  servlet:
+    context-path: "/"
+
+spring:
+  application:
+    name: api-gateway
+
+#  security:
+#    user:
+#      name: user
+#      password: 1234
+
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+        - id: user-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=0
+        - id: user-admin
+          uri: lb://user-service
+          predicates:
+            - Path=/admin/**
+          filters:
+            - StripPrefix=0
+        - id: user-protected
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - StripPrefix=0
+
+        - id: user-player
+          uri: lb://user-service
+          predicates:
+            - Path=/player/**
+          filters:
+            - StripPrefix=0
+
+        - id: tournament-service
+          uri: lb://tournament-service
+          predicates:
+            - Path=/tournaments/**
+          filters:
+            - StripPrefix=1
+        - id: tournament-player
+          uri: lb://tournament-service
+          predicates:
+            - Path=/tournament/**
+          filters:
+            - StripPrefix=0
+
+
+
+
+        - id: match-service
+          uri: lb://match-service
+          predicates:
+            - Path=/api/matches/**
+          filters:
+            - StripPrefix=2
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka}
+  instance:
+    prefer-ip-address: true
+
+swagger:
+  services:
+    - name: user-service
+      url: ${USER_SERVICE_URL:http://localhost:8081/users/v3/api-docs}
+    - name: tournament-service
+      url: ${TOURNAMENT_SERVICE_URL:http://localhost:8082/tournaments/v3/api-docs}
+    - name: match-service
+      url: ${MATCH_SERVICE_URL:http://localhost:8083/matches/v3/api-docs}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    urls:
+      - name: user-service
+        url: /v3/api-docs/user-service
+      - name: tournament-service
+        url: /v3/api-docs/tournament-service
+      - name: match-service
+        url: /v3/api-docs/match-service
