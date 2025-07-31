@@ -27,10 +27,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**").permitAll()        // javni endpointi
-                        .requestMatchers("/player/**").hasRole("PLAYER")  // player rola
-                        .requestMatchers("/admin/**").hasRole("ADMIN")    // admin rola
-                        .anyRequest().authenticated()                      // ostali endpointi za ulogovane
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/player/**").hasRole("PLAYER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/organizer/**").hasRole("ORGANIZER")
+                        .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
