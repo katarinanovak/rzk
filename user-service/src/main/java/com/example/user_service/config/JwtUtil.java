@@ -22,13 +22,14 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long jwtExpirationMs;
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, Long userId) {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(auth -> auth.getAuthority().replace("ROLE_", "")) // ukloni prefix ako postoji
                 .collect(Collectors.toList());
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .claim("id", userId)
                 .claim("roles", roles) // dodaj claim bez "ROLE_" prefiksa
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))

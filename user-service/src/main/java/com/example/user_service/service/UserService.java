@@ -6,6 +6,7 @@ import com.example.user_service.exception.UserNotFoundException;
 import com.example.user_service.model.User;
 import com.example.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,6 +54,12 @@ public class UserService {
 
         return dto;
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
 
 
 }

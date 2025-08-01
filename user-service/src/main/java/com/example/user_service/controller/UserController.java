@@ -13,7 +13,7 @@ import java.util.List;
 public class UserController {
 
 
-    // Endpoint dostupan svim ulogovanim korisnicima
+    // TEST
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> getUserProfile() {

@@ -20,6 +20,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+    @ExceptionHandler(InvalidDateException.class)
+    public ResponseEntity<String> handleInvalidDate(InvalidDateException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 
 
 

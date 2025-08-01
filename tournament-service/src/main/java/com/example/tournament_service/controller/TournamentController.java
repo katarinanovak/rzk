@@ -1,5 +1,6 @@
 package com.example.tournament_service.controller;
 
+import com.example.tournament_service.dto.RescheduleDto;
 import com.example.tournament_service.dto.TournamentDto;
 import com.example.tournament_service.dto.UserTournamentMatchScoreDto;
 import com.example.tournament_service.model.Tournament;
@@ -9,6 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,6 +84,22 @@ public class TournamentController {
         String name = tournamentService.getTournamentNameById(id);
         return ResponseEntity.ok(name);
     }
+
+
+    @PatchMapping("/organizer/{id}/reschedule")
+    @PreAuthorize("hasAuthority('ORGANIZER')")
+    public ResponseEntity<Tournament> rescheduleTournament(
+            @PathVariable Long id,
+            @RequestBody RescheduleDto dto
+    ) {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long organizerId = jwt.getClaim("id"); // ako se claim zove "id"
+
+        Tournament updated = tournamentService.rescheduleTournamentAsOrganizer(id, organizerId, dto);
+        return ResponseEntity.ok(updated);
+    }
+
+
 
 
 

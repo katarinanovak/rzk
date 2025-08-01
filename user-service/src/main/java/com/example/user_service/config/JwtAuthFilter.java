@@ -64,7 +64,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 // Pretvori stringove u GrantedAuthority:
                 List<SimpleGrantedAuthority> authorities = roles.stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // dodaj prefix
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                         .collect(Collectors.toList());
 
                 UsernamePasswordAuthenticationToken authToken =
