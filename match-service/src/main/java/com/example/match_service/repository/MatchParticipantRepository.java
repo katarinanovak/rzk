@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface MatchParticipantRepository extends JpaRepository<MatchParticipant, Long> {
     List<MatchParticipant> findByUserId(Long participantId);
+
 }

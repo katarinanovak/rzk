@@ -1,5 +1,6 @@
 package com.example.match_service.controller;
 
+import com.example.match_service.dto.PlayerMatchDTO;
 import com.example.match_service.dto.UserMatchScoreDto;
 import com.example.match_service.service.MatchService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,21 @@ public class MatchController {
         }
 
         return ResponseEntity.ok(scores);
+    }
+
+    @GetMapping("/user/{userId}/schedule")
+    @PreAuthorize("hasAuthority('PLAYER')")
+    public ResponseEntity<List<PlayerMatchDTO>> getUserMatchSchedule(@PathVariable Long userId) {
+        if (userId <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<PlayerMatchDTO> schedule = matchService.getScheduleForUser(userId);
+        if (schedule.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(schedule);
     }
 }
 

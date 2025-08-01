@@ -17,10 +17,9 @@ public class Role {
 
     private String name;
 
-    // Opciono, ako želiš dvosmernu vezu
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<User> users;
-    // Constructors
+
     public Role() {}
 
     public Role(Long id, String name, List<User> users) {
@@ -29,7 +28,6 @@ public class Role {
         this.users = users;
     }
 
-    // Getters
     public Long getId() {
         return id;
     }
@@ -42,7 +40,7 @@ public class Role {
         return users;
     }
 
-    // Setters
+
     public void setId(Long id) {
         this.id = id;
     }

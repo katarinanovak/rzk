@@ -74,6 +74,14 @@ public class TournamentController {
         }
     }
 
+    @GetMapping("/{id}/name")
+    @PreAuthorize("hasAuthority('PLAYER')")
+    public ResponseEntity<String> getTournamentName(@PathVariable Long id) {
+        String name = tournamentService.getTournamentNameById(id);
+        return ResponseEntity.ok(name);
+    }
+
+
 
 //    @GetMapping
 //    @PreAuthorize("hasAuthority('PLAYER')")

@@ -95,8 +95,8 @@ public class TournamentService implements ITournamentService {
                 new UserMatchScoreDto(
                         dto.getMatchId(),
                         dto.getTournamentId(),
-                        dto.getMatchDate(),     // koristi direktno ako je već Date
-                        dto.getPointsWon()      // koristi kao score
+                        dto.getMatchDate(),
+                        dto.getPointsWon()
                 )
         ).collect(Collectors.toList());
 
@@ -117,5 +117,12 @@ public class TournamentService implements ITournamentService {
         }
 
         return result;
+    }
+
+    public String getTournamentNameById(Long id) {
+        Tournament tournament = tournamentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Turnir sa ID " + id + " nije pronađen."));
+        System.out.println("Returning tournament name: " + tournament.getName());
+        return tournament.getName();
     }
 }
