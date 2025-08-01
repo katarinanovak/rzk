@@ -3,6 +3,7 @@ package com.example.tournament_service.service;
 import com.example.tournament_service.dto.TournamentDto;
 import com.example.tournament_service.dto.UserMatchScoreDto;
 import com.example.tournament_service.dto.UserTournamentMatchScoreDto;
+import com.example.tournament_service.exception.UserNotFoundException;
 import com.example.tournament_service.feign.MatchServiceFeignClient;
 import com.example.tournament_service.model.Participant;
 import com.example.tournament_service.model.Tournament;
@@ -66,7 +67,6 @@ public class TournamentService implements ITournamentService {
         tournamentRepository.delete(tournament);
     }
 
-    // U TournamentService
     public List<Tournament> getAllTournamentsByOrganizer(Long organizerId) {
         return tournamentRepository.findAllByOrganizerId(organizerId);
     }
@@ -85,11 +85,20 @@ public class TournamentService implements ITournamentService {
 
         List<Participant> participations = participantRepo.findByUserId(userId);
         if (participations.isEmpty()) {
-            return Collections.emptyList();
+            throw new UserNotFoundException("Korisnik sa ID " + userId + " nije učestvovao ni u jednom turniru.");
         }
 
-        List<UserMatchScoreDto> userScores = matchFeign.getUserScores(userId).getBody();
-        if (userScores == null) userScores = new ArrayList<>();
+        List<UserMatchScoreDto> feignScores = matchFeign.getUserScores(userId).getBody();
+        if (feignScores == null) feignScores = new ArrayList<>();
+
+        List<UserMatchScoreDto> userScores = feignScores.stream().map(dto ->
+                new UserMatchScoreDto(
+                        dto.getMatchId(),
+                        dto.getTournamentId(),
+                        dto.getMatchDate(),     // koristi direktno ako je već Date
+                        dto.getPointsWon()      // koristi kao score
+                )
+        ).collect(Collectors.toList());
 
         Map<Long, List<UserMatchScoreDto>> scoresByTournament = userScores.stream()
                 .collect(Collectors.groupingBy(UserMatchScoreDto::getTournamentId));
@@ -97,10 +106,9 @@ public class TournamentService implements ITournamentService {
         List<UserTournamentMatchScoreDto> result = new ArrayList<>();
 
         for (Participant p : participations) {
-            if (p.getTournament() == null) continue;  // ili baci exception ako treba
+            if (p.getTournament() == null) continue;
 
             Long tournamentId = p.getTournament().getId();
-
             Tournament t = tournamentRepository.findById(tournamentId).orElse(null);
             if (t == null) continue;
 

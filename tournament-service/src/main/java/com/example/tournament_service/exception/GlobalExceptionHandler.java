@@ -16,6 +16,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleSecurityException(SecurityException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
 
 
 }

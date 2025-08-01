@@ -7,7 +7,7 @@ public class UserMatchScoreDto {
     private Long matchId;
     private Long tournamentId;
     private LocalDate matchDate;
-    private Integer gamesWon;    // umesto "score"
+    private Integer gamesWon;
     private Integer pointsWon;
 
     public UserMatchScoreDto() {
@@ -20,7 +20,6 @@ public class UserMatchScoreDto {
         this.gamesWon = gamesWon;
         this.pointsWon = pointsWon;
     }
-
     public Long getMatchId() {
         return matchId;
     }
