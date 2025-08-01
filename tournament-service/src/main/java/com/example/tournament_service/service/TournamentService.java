@@ -1,23 +1,33 @@
 package com.example.tournament_service.service;
 
 import com.example.tournament_service.dto.TournamentDto;
+import com.example.tournament_service.dto.UserMatchScoreDto;
+import com.example.tournament_service.dto.UserTournamentMatchScoreDto;
+import com.example.tournament_service.feign.MatchServiceFeignClient;
+import com.example.tournament_service.model.Participant;
 import com.example.tournament_service.model.Tournament;
 import com.example.tournament_service.model.TournamentType;
+import com.example.tournament_service.repository.ParticipantRepository;
 import com.example.tournament_service.repository.TournamentRepository;
 import com.example.tournament_service.repository.TournamentTypeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-public class TournamentService {
+public class TournamentService implements ITournamentService {
+    private final ParticipantRepository participantRepo;
+
+    private final MatchServiceFeignClient matchFeign;
 
     private final TournamentRepository tournamentRepository;
     private final TournamentTypeRepository tournamentTypeRepository;
 
-    public TournamentService(TournamentRepository tournamentRepository,
+    public TournamentService(ParticipantRepository participantRepo, MatchServiceFeignClient matchFeign, TournamentRepository tournamentRepository,
                              TournamentTypeRepository tournamentTypeRepository) {
+        this.participantRepo = participantRepo;
+        this.matchFeign = matchFeign;
         this.tournamentRepository = tournamentRepository;
         this.tournamentTypeRepository = tournamentTypeRepository;
     }
@@ -67,5 +77,37 @@ public class TournamentService {
     }
 
 
+    @Override
+    public List<UserTournamentMatchScoreDto> getUserTournamentsWithScores(Long userId) {
+        if (userId == null || userId <= 0) {
+            throw new IllegalArgumentException("Invalid user ID");
+        }
 
+        List<Participant> participations = participantRepo.findByUserId(userId);
+        if (participations.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<UserMatchScoreDto> userScores = matchFeign.getUserScores(userId).getBody();
+        if (userScores == null) userScores = new ArrayList<>();
+
+        Map<Long, List<UserMatchScoreDto>> scoresByTournament = userScores.stream()
+                .collect(Collectors.groupingBy(UserMatchScoreDto::getTournamentId));
+
+        List<UserTournamentMatchScoreDto> result = new ArrayList<>();
+
+        for (Participant p : participations) {
+            if (p.getTournament() == null) continue;  // ili baci exception ako treba
+
+            Long tournamentId = p.getTournament().getId();
+
+            Tournament t = tournamentRepository.findById(tournamentId).orElse(null);
+            if (t == null) continue;
+
+            List<UserMatchScoreDto> scores = scoresByTournament.getOrDefault(t.getId(), new ArrayList<>());
+            result.add(new UserTournamentMatchScoreDto(t.getName(), scores));
+        }
+
+        return result;
+    }
 }

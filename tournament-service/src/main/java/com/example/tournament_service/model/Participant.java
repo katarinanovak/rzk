@@ -1,17 +1,10 @@
 package com.example.tournament_service.model;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "participants")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Participant {
 
     @Id
@@ -27,5 +20,55 @@ public class Participant {
     private LocalDate joinedAt;
 
     private Integer score; // ako se koristi
-}
 
+    public Participant() {
+    }
+
+    public Participant(Long id, Long userId, Tournament tournament, LocalDate joinedAt, Integer score) {
+        this.id = id;
+        this.userId = userId;
+        this.tournament = tournament;
+        this.joinedAt = joinedAt;
+        this.score = score;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Tournament getTournament() {
+        return tournament;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
+    }
+
+    public LocalDate getJoinedAt() {
+        return joinedAt;
+    }
+
+    public void setJoinedAt(LocalDate joinedAt) {
+        this.joinedAt = joinedAt;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+}
