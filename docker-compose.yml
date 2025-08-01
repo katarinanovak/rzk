@@ -1,0 +1,79 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "3310:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Goran123!
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+
+  service-registry:
+    image: katarinanovak/service-registry:v1.0.0
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+
+  user-service:
+    image: katarinanovak/user-service:v1.0.1
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mysql
+      - service-registry
+    networks:
+      - backend
+
+  tournament-service:
+    image: katarinanovak/tournament-service:v1.0.1
+    container_name: tournament-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mysql
+      - service-registry
+    networks:
+      - backend
+
+  match-service:
+    image: katarinanovak/match-service:v1.0.1
+    container_name: match-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mysql
+      - service-registry
+    networks:
+      - backend
+
+  api-gateway:
+    image: katarinanovak/api-gateway:v1.0.1
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - service-registry
+    networks:
+      - backend
+
+volumes:
+  mysql_data:
+
+networks:
+  backend:
+    driver: bridge
