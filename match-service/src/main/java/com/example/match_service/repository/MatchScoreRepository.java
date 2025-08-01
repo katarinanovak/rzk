@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface MatchScoreRepository extends JpaRepository<MatchScore, Integer> {
-    //Optional<MatchScore> findByMatchIdAndPlayerId(Long matchId, Long playerId);
     List<MatchScore> findByMatchIdAndPlayerId(Long matchId, Long playerId);
 }

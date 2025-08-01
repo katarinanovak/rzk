@@ -34,7 +34,6 @@ public class User {
         this.role=role;
     }
 
-    // Getters
     public Long getId() {
         return id;
     }
@@ -55,7 +54,6 @@ public class User {
         return role;
     }
 
-    // Setters
     public void setId(Long id) {
         this.id = id;
     }

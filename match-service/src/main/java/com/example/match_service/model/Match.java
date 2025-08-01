@@ -20,11 +20,9 @@ public class Match {
     @Column(name = "status")
     private String status;
     @Column(name = "description")
-    private String description;// npr. SCHEDULED, ONGOING, FINISHED
+    private String description;
 
-//    private Integer round;
-//
-//    private Long winnerParticipantId;
+
 
     public Match() {
     }

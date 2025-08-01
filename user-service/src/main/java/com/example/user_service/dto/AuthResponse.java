@@ -8,7 +8,6 @@ public class AuthResponse {
     private String token;
 
     public AuthResponse() {
-        // default constructor
     }
 
     public AuthResponse(String token) {

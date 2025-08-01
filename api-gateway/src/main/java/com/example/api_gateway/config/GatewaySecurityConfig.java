@@ -19,10 +19,10 @@ public class GatewaySecurityConfig {
 //            return http
 //                    .csrf(csrf -> csrf.disable())
 //                    .authorizeExchange(auth -> auth
-//                            .pathMatchers("/auth/**").permitAll()  // endpointi za prijavu i registraciju
-//                            .anyExchange().authenticated()          // ostali endpointi zahtevaju autentifikaciju
+//                            .pathMatchers("/auth/**").permitAll()
+//                            .anyExchange().authenticated()
 //                    )
-//                    .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt) // uključi JWT validaciju
+//                    .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
 //                    .build();
 //        }
 }

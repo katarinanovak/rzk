@@ -7,8 +7,8 @@ public class UserMatchScoreDto {
     private Long matchId;
     private Long tournamentId;
     private Date matchDate;
-    private Integer score;       // može biti pointsWon ako želiš da koristiš isto polje
-    private Integer pointsWon;   // dodatno ako želiš direktno da vidiš iz match-service
+    private Integer score;
+    private Integer pointsWon;
 
     public UserMatchScoreDto() {
     }

@@ -44,11 +44,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Bean
     CommandLineRunner init(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         return args -> {
-            // Provera da li rola postoji, ako ne postoji — kreiraj je
+
             Role adminRole = roleRepository.findByName("ADMIN")
                     .orElseGet(() -> roleRepository.save(new Role(null, "ADMIN", null)));
 
-            // Provera da li korisnik postoji, ako ne postoji — kreiraj ga
+            //test, provera
             if (userRepository.findByUsername("admin").isEmpty()) {
                 User adminUser = new User();
                 adminUser.setUsername("admin");

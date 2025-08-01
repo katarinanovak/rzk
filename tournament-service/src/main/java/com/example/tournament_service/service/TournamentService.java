@@ -46,14 +46,14 @@ public class TournamentService implements ITournamentService {
         tournament.setStatus(dto.getStatus());
         tournament.setOrganizerId(dto.getOrganizerId());
 
-        // Uzimamo tip turnira iz baze po ID-ju, ili bacamo izuzetak ako ne postoji
+
         Optional<TournamentType> tournamentTypeOpt = tournamentTypeRepository.findById(dto.getTournamentTypeId());
         if (tournamentTypeOpt.isEmpty()) {
             throw new IllegalArgumentException("Ne postoji tip turnira sa ID: " + dto.getTournamentTypeId());
         }
         tournament.setTournamentType(tournamentTypeOpt.get());
 
-        // participants polje može ostati prazno na kreiranju
+
         tournament.setParticipants(null);
 
         return tournamentRepository.save(tournament);
