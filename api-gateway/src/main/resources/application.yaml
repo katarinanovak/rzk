@@ -7,10 +7,6 @@ spring:
   application:
     name: api-gateway
 
-#  security:
-#    user:
-#      name: user
-#      password: 1234
 
   main:
     web-application-type: reactive
@@ -78,24 +74,3 @@ eureka:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka}
   instance:
     prefer-ip-address: true
-
-swagger:
-  services:
-    - name: user-service
-      url: ${USER_SERVICE_URL:http://localhost:8081/users/v3/api-docs}
-    - name: tournament-service
-      url: ${TOURNAMENT_SERVICE_URL:http://localhost:8082/tournaments/v3/api-docs}
-    - name: match-service
-      url: ${MATCH_SERVICE_URL:http://localhost:8083/matches/v3/api-docs}
-
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    urls:
-      - name: user-service
-        url: /v3/api-docs/user-service
-      - name: tournament-service
-        url: /v3/api-docs/tournament-service
-      - name: match-service
-        url: /v3/api-docs/match-service
