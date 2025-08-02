@@ -1,0 +1,12 @@
+https://hub.docker.com/repositories/katarinanovak
+
+
+https://hub.docker.com/repository/docker/katarinanovak/api-gateway
+
+https://hub.docker.com/repository/docker/katarinanovak/user-service
+
+https://hub.docker.com/repository/docker/katarinanovak/tournament-service
+
+https://hub.docker.com/repository/docker/katarinanovak/match-service
+
+https://hub.docker.com/repository/docker/katarinanovak/service-registry
