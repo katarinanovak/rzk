@@ -25,8 +25,8 @@ INSERT INTO roles (id, name) VALUES
                                  (3, 'ORGANIZER');
 
 INSERT INTO users (id, username, password, email, role_id) VALUES
-                                                               (1, 'admin', '1234', 'admin@example.com', 2),
                                                                (2, 'player1', 'player123', 'player1@example.com', 1),
+                                                               (1, 'admin', '1234', 'admin@example.com', 2),
                                                                (3, 'organizer1', 'organizer123', 'organizer1@example.com', 3),
                                                                (16, 'player2', 'player234', 'player2@example.com', 1),
                                                                (17, 'player36', 'player2345', 'player33@example.com', 1),
