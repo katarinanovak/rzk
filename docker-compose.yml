@@ -21,12 +21,13 @@ services:
       - backend
 
   user-service:
-    image: katarinanovak/user-service:v1.0.1
+    image: katarinanovak/user-service:v1.0.4
     container_name: user-service
     ports:
       - "8081:8081"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
     depends_on:
       - mysql
       - service-registry
@@ -34,12 +35,13 @@ services:
       - backend
 
   tournament-service:
-    image: katarinanovak/tournament-service:v1.0.1
+    image: katarinanovak/tournament-service:v1.0.3
     container_name: tournament-service
     ports:
       - "8082:8082"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
     depends_on:
       - mysql
       - service-registry
@@ -47,12 +49,13 @@ services:
       - backend
 
   match-service:
-    image: katarinanovak/match-service:v1.0.1
+    image: katarinanovak/match-service:v1.0.3
     container_name: match-service
     ports:
       - "8083:8083"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
     depends_on:
       - mysql
       - service-registry
@@ -60,12 +63,13 @@ services:
       - backend
 
   api-gateway:
-    image: katarinanovak/api-gateway:v1.0.1
+    image: katarinanovak/api-gateway:v1.0.2
     container_name: api-gateway
     ports:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
     depends_on:
       - service-registry
     networks:
