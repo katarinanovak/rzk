@@ -20,9 +20,9 @@ CREATE TABLE IF NOT EXISTS users (
     );
 
 INSERT INTO roles (id, name) VALUES
-                                 (1, 'player'),
-                                 (2, 'admin'),
-                                 (3, 'organizer');
+                                 (1, 'PLAYER'),
+                                 (2, 'ADMIN'),
+                                 (3, 'ORGANIZER');
 
 INSERT INTO users (id, username, password, email, role_id) VALUES
                                                                (1, 'admin', '1234', 'admin@example.com', 2),
