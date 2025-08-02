@@ -45,6 +45,7 @@ services:
     depends_on:
       - mysql
       - service-registry
+      - match-service
     networks:
       - backend
 
